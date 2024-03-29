@@ -4,8 +4,8 @@ const Form = ({
   password,
   editablevideo,
   seteditablevideo,
-  addpassword,
-  updatevideodata,
+  dispatch,
+
 }) => {
   const [visible, setVisible] = useState(true);
   const [data, SetData] = useState({
@@ -35,12 +35,12 @@ const Form = ({
     e.stopPropagation();
 
     if (editablevideo) {
-      updatevideodata(editablevideo, data);
+      dispatch({ type: "UPDATE", payload: { editablevideo, data } })
     } else {
-      addpassword(data);
+      dispatch({ type: "ADD", payload: data });
     }
 
-    seteditablevideo(null); 
+    seteditablevideo(null);
 
     SetData({
       id: "",
@@ -91,7 +91,7 @@ const Form = ({
         className="p-1 border-[2px] appearance-none ring-1 "
       />
       <button className="bg-gray-500 px-1 py-2 w-1/3 mx-auto rounded hover:bg-green-300 text-lg font-bold">
-      {editablevideo?"Update Password":"Add Password"}
+        {editablevideo ? "Update Password" : "Add Password"}
       </button>
     </form>
   );

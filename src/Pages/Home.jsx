@@ -5,89 +5,64 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 const Home = () => {
-
-
-  const reducerpassword=(password,action)=>{
-    switch(action.type){
+  const reducerpassword = (password, action) => {
+    switch (action.type) {
       case "ADD":
-        localStorage.setItem("my-password", JSON.stringify([...password, action.payload]));
-        return [...password, action.payload]
-        case "DELETE":
         localStorage.setItem(
           "my-password",
-          JSON.stringify(password.filter((value) => value.id !== action.payload))
+          JSON.stringify([...password, action.payload])
+        );
+        return [...password, action.payload];
+      case "DELETE":
+        localStorage.setItem(
+          "my-password",
+          JSON.stringify(
+            password.filter((value) => value.id !== action.payload)
+          )
         );
         return password.filter((value) => value.id !== action.payload);
       case "UPDATE":
-        const index = password.findIndex((value) => value.id === action.payload.editablevideo.id);
-        console.log(action.payload.data);
-        const newdata=action.payload.data;
-        newdata["id"]=index+1;
+        const index = password.findIndex(
+          (value) => value.id === action.payload.editablevideo.id
+        );
 
-        console.log(newdata)
-   
-   
+        const newdata = action.payload.data;
+        newdata["id"] = index + 1;
+
         const newpassword = [...password];
-   
+
         newpassword.splice(index, 1, newdata);
         localStorage.setItem("my-password", JSON.stringify(newpassword));
-        return   newpassword;
-        default:
-        return password
-      }
-      
-      
+        return newpassword;
+      default:
+        return password;
     }
+  };
 
-    
-    const data=JSON.parse(localStorage.getItem("my-password"))||[]
-    const [password,dispatch]=useReducer(reducerpassword,data)
-    
-    const [editablevideo, setEditablevideo] = useState(null);
+  const data = JSON.parse(localStorage.getItem("my-password")) || [];
+  const [password, dispatch] = useReducer(reducerpassword, data);
+
+  const [editablevideo, setEditablevideo] = useState(null);
+
  
-    
-    const deletepassword = (id) => {
-      dispatch({type:"DELETE",payload:id})
-   
-    };
-    
   const updatepassword = (id) => {
-
     const updatevalue = password.find((value) => value.id === id);
 
     setEditablevideo(updatevalue);
   };
 
-  const updatevideodata = (editablevideo, data) => {
 
 
-    // const index = password.findIndex((value) => value.id === editablevideo.id);
-    // console.log(index);
 
-    // const newpassword = [...password];
-    // newpassword.splice(index, 1, data);
-    // console.log(newpassword);
-    dispatch({type:"UPDATE",payload:{editablevideo,data}})
-    // setPassword(newpassword);
-    // updatevideodata(newpassword)
-
-  };
-
-  const addpassword = (data) => {
-    // setPassword([...password, data]);
-    dispatch({type:"ADD",payload:data})
- 
-  };
   return (
     <>
       <div className="bg-black min-h-[100vh] flex p-2  flex-col gap-2">
         <Form
-          addpassword={addpassword}
+          dispatch={dispatch}
           password={password}
           seteditablevideo={setEditablevideo}
           editablevideo={editablevideo}
-          updatevideodata={updatevideodata}
-
+          
         />
         {password.length === 0 && (
           <h1 className="text-center mt-3 text-xl text-white">
@@ -100,9 +75,9 @@ const Home = () => {
               return (
                 <Item
                   key={value.id}
-                  deletepassword={deletepassword}
+                  dispatch={dispatch}
                   updatepassword={updatepassword}
-                  addpassword={addpassword}
+         
                   {...value}
                 />
               );

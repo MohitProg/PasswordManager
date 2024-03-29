@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Item = ({account,password,email,deletepassword,id,updatepassword}) => {
+const Item = ({account,password,email,dispatch,id,updatepassword}) => {
     
 
   return (
@@ -15,7 +15,7 @@ const Item = ({account,password,email,deletepassword,id,updatepassword}) => {
         </div>
         <div className='bg-gray-400  flex justify-between text-3xl'>
         <i className="bi bi-pencil-square cursor-pointer" onClick={()=>updatepassword(id)}></i>
-        <i className="bi bi-trash-fill  cursor-pointer" onClick={()=>deletepassword(id)}></i>
+        <i className="bi bi-trash-fill  cursor-pointer" onClick={()=>dispatch({ type: "DELETE", payload: id })}></i>
         </div>
     </div>
 
