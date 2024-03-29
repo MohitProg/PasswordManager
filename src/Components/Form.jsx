@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import ThemeContext from "../Context/ThemeContext";
-import DispatchContext from "../Context/DispatchContext";
+
+import useDispatch from "../hooks/Dispatchhook";
 
 const Form = ({
   password,
@@ -9,7 +9,7 @@ const Form = ({
 
   mode,
 }) => {
-  const dispatch=useContext(DispatchContext);
+  const dispatch=useDispatch()
   const [visible, setVisible] = useState(true);
   const [data, SetData] = useState({
     id: "",

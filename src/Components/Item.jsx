@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
-import DispatchContext from '../Context/DispatchContext'
+import React from 'react'
+import useDispatch from '../hooks/Dispatchhook'
+
 
 const Item = ({account,password,email,id,updatepassword,mode}) => {
-    const dispatch=useContext(DispatchContext)
+   const dispatch=useDispatch();
 
   return (
     <>
