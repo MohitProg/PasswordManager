@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-const Form = ({ setPassword, password,editablevideo,seteditablevideo,addpassword,updatevideodata }) => {
+const Form = ({
+  password,
+  editablevideo,
+  seteditablevideo,
+  addpassword,
+  updatevideodata,
+}) => {
   const [visible, setVisible] = useState(true);
   const [data, SetData] = useState({
     id: "",
@@ -8,20 +14,12 @@ const Form = ({ setPassword, password,editablevideo,seteditablevideo,addpassword
     password: "",
     account: "",
   });
+
   useEffect(() => {
-    const password = localStorage.getItem("my-password");
-    if (password) {
-      // setPassword(JSON.parse(password));
-      addpassword(JSON.parse(password))
+    if (editablevideo) {
+      SetData(editablevideo);
     }
-  }, []);
-
-  useEffect(()=>{
-    if(editablevideo){
-      SetData(editablevideo)
-
-    }
-  },[editablevideo])
+  }, [editablevideo]);
 
   const handleChange = (e) => {
     e.stopPropagation();
@@ -35,29 +33,14 @@ const Form = ({ setPassword, password,editablevideo,seteditablevideo,addpassword
   const handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(editablevideo);
 
-    if(editablevideo){
-
-      // const index=password.findIndex((value)=>value.id===editablevideo.id)
-      // console.log(index);
-
-      // const newpassword=[...password]
-      // newpassword.splice(index,1 ,data);
-      // console.log(newpassword);
-      // setPassword(newpassword);
-      updatevideodata(editablevideo,data)
-      // localStorage.setItem("my-password",JSON.stringify(newpassword))
-      
-    }else{
-      addpassword(data)
-      // setPassword([...password, data]);
-      // localStorage.setItem("my-password", JSON.stringify([...password, data]));
-
+    if (editablevideo) {
+      updatevideodata(editablevideo, data);
+    } else {
+      addpassword(data);
     }
 
-    seteditablevideo(null)
-
+    seteditablevideo(null); 
 
     SetData({
       id: "",
@@ -108,7 +91,7 @@ const Form = ({ setPassword, password,editablevideo,seteditablevideo,addpassword
         className="p-1 border-[2px] appearance-none ring-1 "
       />
       <button className="bg-gray-500 px-1 py-2 w-1/3 mx-auto rounded hover:bg-green-300 text-lg font-bold">
-        Submit
+      {editablevideo?"Update Password":"Add Password"}
       </button>
     </form>
   );
