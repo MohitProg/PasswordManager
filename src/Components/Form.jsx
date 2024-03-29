@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import ThemeContext from "../Context/ThemeContext";
+import DispatchContext from "../Context/DispatchContext";
 
 const Form = ({
   password,
   editablevideo,
   seteditablevideo,
-  dispatch,
 
+  mode,
 }) => {
+  const dispatch=useContext(DispatchContext);
   const [visible, setVisible] = useState(true);
   const [data, SetData] = useState({
     id: "",
@@ -15,6 +18,7 @@ const Form = ({
     account: "",
   });
 
+  
   useEffect(() => {
     if (editablevideo) {
       SetData(editablevideo);
@@ -35,7 +39,7 @@ const Form = ({
     e.stopPropagation();
 
     if (editablevideo) {
-      dispatch({ type: "UPDATE", payload: { editablevideo, data } })
+      dispatch({ type: "UPDATE", payload: { editablevideo, data } });
     } else {
       dispatch({ type: "ADD", payload: data });
     }
@@ -50,12 +54,17 @@ const Form = ({
     });
   };
 
+  
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex bg-white mx-auto text-lg font-semibold flex-col mt-3 p-2 w-full sm:w-2/3 lg:w-2/3 gap-2 shadow  rounded"
+      className={`flex ${
+        mode === "DarkMode" ? "bg-white" : "bg-gray-400"
+      } mx-auto sm:text-lg font-semibold flex-col mt-3 p-2 w-full sm:w-2/3 lg:w-2/3 gap-2 ${
+        mode === "DarkMode" ? "text-black" : "text-black"
+      } shadow  rounded`}
     >
-      <h1 className="text-center text-xl  font-bold">Password Manager</h1>
+      <h1 className="text-center sm:text-xl  font-bold">Password Manager</h1>
       <label htmlFor="">Email</label>
       <input
         type="text"
@@ -90,9 +99,11 @@ const Form = ({
         onChange={handleChange}
         className="p-1 border-[2px] appearance-none ring-1 "
       />
-      <button className="bg-gray-500 px-1 py-2 w-1/3 mx-auto rounded hover:bg-green-300 text-lg font-bold">
-        {editablevideo ? "Update Password" : "Add Password"}
-      </button>
+      <div className="flex justify-between">
+        <button className="bg-gray-500 px-1 py-2 w-1/3 mx-auto rounded hover:bg-green-300  sm:text-lg font-bold">
+          {editablevideo ? "Update Password" : "Add Password"}
+        </button>
+      </div>
     </form>
   );
 };
